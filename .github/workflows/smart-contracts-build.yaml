@@ -1,0 +1,39 @@
+name: Smart Contracts Build
+
+env:
+  INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+  PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "smart-contracts/**"
+  push:
+    branches:
+      - main
+
+jobs:
+  run-contracts-integration:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    defaults:
+      run:
+        working-directory: smart-contracts
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+
+      - name: Install the dependencies
+        run: npm ci
+
+      - name: Lint the code
+        run: npm run lint
+
+      - name: Compile the contracts
+        run: npm run compile

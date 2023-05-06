@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Goerli",
+    "chainId": 5,
+    "nativeCurrencySymbol": "gETH",
+    "explorerURL": "https://goerli.etherscan.io/",
+    "vscCoin": {
+      "address": "",
+      "name": "VSCCoin Goerli",
+      "symbol": "VSC",
+      "decimals": 18
+    }
+  },
+  {
+    "name": "Sepolia",
+    "chainId": 11155111,
+    "nativeCurrencySymbol": "sETH",
+    "explorerURL": "https://sepolia.etherscan.io/",
+    "vscCoin": {
+      "address": "0x887fb915d11e5ed473e23213de272de521180f84",
+      "name": "VSCCoin Sepolia",
+      "symbol": "VSC",
+      "decimals": 18
+    }
+  },
+  {
+    "name": "Linea Goerli",
+    "chainId": 59140,
+    "nativeCurrencySymbol": "lETH",
+    "explorerURL": "https://explorer.goerli.linea.build/",
+    "vscCoin": {
+      "address": "",
+      "name": "VSCCoin Linea",
+      "symbol": "VSC",
+      "decimals": 18
+    }
+  }
+]
