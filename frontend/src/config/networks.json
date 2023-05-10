@@ -5,11 +5,14 @@
     "nativeCurrencySymbol": "gETH",
     "explorerURL": "https://goerli.etherscan.io/",
     "vscCoin": {
-      "address": "",
+      "address": "0xeb4CbAF838e77CF58306dc5Ed35575D6df68cce6",
       "name": "VSCCoin Goerli",
       "symbol": "VSC",
       "decimals": 18
-    }
+    },
+    "EncryptionVerifier": "0xDBDee6Fc934D5c0f3427F28a6d08b547a1025CDe",
+    "BountyFactory": "0x21CD50B9e829666653829c5305995D5d29F2b3e1",
+    "CircuitVerifier": "0x407972ca4683803a926a85963f28C71147c6DBdF"
   },
   {
     "name": "Sepolia",
@@ -21,7 +24,10 @@
       "name": "VSCCoin Sepolia",
       "symbol": "VSC",
       "decimals": 18
-    }
+    },
+    "EncryptionVerifier": "0xE7d61F4E2561Cd58A979ea08C7e80Db3917dC73F",
+    "BountyFactory": "0xedfE6911F97E09F4b792D7e7123E2Ee369D50A25",
+    "CircuitVerifier": "0x7Fdedc9FbdFFa215d69B7eE798bfB368b3b03FBa"
   },
   {
     "name": "Linea Goerli",
@@ -29,10 +35,13 @@
     "nativeCurrencySymbol": "lETH",
     "explorerURL": "https://explorer.goerli.linea.build/",
     "vscCoin": {
-      "address": "",
+      "address": "0xAF3Bb874F78249525a80509cE89F9281364F2fB1",
       "name": "VSCCoin Linea",
       "symbol": "VSC",
       "decimals": 18
-    }
+    },
+    "EncryptionVerifier": "0x7de9a176619bfE2AD08F4aE11BEE7f631B10a4Eb",
+    "BountyFactory": "0xCB589Af8dd12aE1C378FD630f9B0e10e597C06c5",
+    "CircuitVerifier": "0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15"
   }
 ]

@@ -15,9 +15,9 @@
     "prettier": "prettier --config ./.prettierrc.yaml --write \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
     "prettier:check": "prettier --check --config ./.prettierrc.yaml \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
     "test": "truffle test",
-    "verify:goerli": "truffle run verify VSCCoin --network goerli",
-    "verify:linea": "truffle run verify VSCCoin --network linea",
-    "verify:sepolia": "truffle run verify VSCCoin --network sepolia"
+    "verify:goerli": "truffle run verify VSCCoin EncryptionVerifier BountyFactory CircuitVerifier --network goerli",
+    "verify:linea": "truffle run verify VSCCoin EncryptionVerifier BountyFactory CircuitVerifier --network linea",
+    "verify:sepolia": "truffle run verify VSCCoin EncryptionVerifier BountyFactory CircuitVerifier --network sepolia"
   },
   "devDependencies": {
     "@openzeppelin/contracts": "^4.8.3",
