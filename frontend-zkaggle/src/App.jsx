@@ -1,37 +1,33 @@
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-  darkTheme,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { localhost } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import "@rainbow-me/rainbowkit/styles.css";
+import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { localhost, sepolia } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BasicTabs from "./TabPanel";
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from "@mui/material/CssBaseline";
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
-  },
+    mode: "dark"
+  }
 });
 
 const { chains, provider } = configureChains(
-  [localhost],
+  [sepolia, localhost],
   [
     publicProvider()
   ]
 );
 const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
+  appName: "My RainbowKit App",
   chains
 });
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider
-})
+});
 
 const App = () => {
   return (
@@ -46,4 +42,4 @@ const App = () => {
   );
 };
 
-export default App
+export default App;

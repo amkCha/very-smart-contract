@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ICircuitVerifier.sol";
 import "./IEncryptionVerifier.sol";
 
-contract Bounty is Initializable, OwnableUpgradeable {
+contract Bounty is Initializable {
     uint public completedStep;
     IEncryptionVerifier public encryptionVerifier;
+    address public vscAddress;
 
-    // variables set by bounty provier at Tx 1 (constructor)
+    // variables set by bounty provider at Tx 1 (constructor)
     string public name;
     string public description;
     bytes[] public dataCIDs;
@@ -47,6 +47,11 @@ contract Bounty is Initializable, OwnableUpgradeable {
 
     event BountyUpdated(uint step);
 
+    modifier onlyVsc(){
+        require(msg.sender == vscAddress);
+        _;
+    }
+
     /*
         Tx 1
         * take owner address from factory
@@ -54,13 +59,13 @@ contract Bounty is Initializable, OwnableUpgradeable {
         * receive native tokens as bounty reward
     */
     function initialize(
-        address _owner,
         string memory _name,
         string memory _description,
         bytes[] memory _dataCIDs,
         uint[] memory _labels,
         uint _accuracyThreshold,
-        address _encryptionVerifier
+        address _encryptionVerifier,
+        address _vscAddress
     ) public payable initializer {
         require(msg.value > 0, "Bounty reward must be greater than 0");
         // length of dataCIDs and labels should be the same
@@ -68,14 +73,13 @@ contract Bounty is Initializable, OwnableUpgradeable {
             _dataCIDs.length == _labels.length,
             "Invalid dataCIDs or labels length"
         );
-        __Ownable_init();
-        transferOwnership(_owner);
         name = _name;
         description = _description;
         dataCIDs = _dataCIDs;
         labels = _labels;
         accuracyThreshold = _accuracyThreshold;
         encryptionVerifier = IEncryptionVerifier(_encryptionVerifier);
+        vscAddress = _vscAddress;
 
         completedStep = 1;
     }
@@ -95,7 +99,7 @@ contract Bounty is Initializable, OwnableUpgradeable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[] memory _input
-    ) public /*
+    ) onlyVsc public /*
      * n = dataCIDs.length
      * first n elements of input should be the model output
      * the next 2n elements of input should be the splitted dataCIDs
@@ -124,18 +128,18 @@ contract Bounty is Initializable, OwnableUpgradeable {
         for (uint i = 0; i < dataCIDs.length; i++) {
             require(
                 keccak256(dataCIDs[i]) ==
-                    keccak256(
-                        abi.encodePacked(
-                            CID_VERSION,
-                            CID_CODEC,
-                            CID_HASH,
-                            CID_LENGTH,
-                            concatDigest(
-                                _input[n + i * 2],
-                                _input[n + i * 2 + 1]
-                            )
+                keccak256(
+                    abi.encodePacked(
+                        CID_VERSION,
+                        CID_CODEC,
+                        CID_HASH,
+                        CID_LENGTH,
+                        concatDigest(
+                            _input[n + i * 2],
+                            _input[n + i * 2 + 1]
                         )
-                    ),
+                    )
+                ),
                 "Data CID mismatch"
             );
         }
@@ -163,7 +167,7 @@ contract Bounty is Initializable, OwnableUpgradeable {
         * only callable if bounty is not complete
         * only callable if bounty hunter has submitted proof
     */
-    function releaseBounty(uint[2] memory _publicKeys) public onlyOwner {
+    function releaseBounty(uint[2] memory _publicKeys) public onlyVsc {
         require(!isComplete, "Bounty is already complete");
         require(a[0] != 0, "Bounty hunter has not submitted proof");
 
@@ -185,18 +189,14 @@ contract Bounty is Initializable, OwnableUpgradeable {
         uint[2] memory _a,
         uint[2][2] memory _b,
         uint[2] memory _c,
-        uint[1005] memory _input
-        /*
-            * first element is the model hash
-            * the next element is the shared key
-            * the next 1001 elements are the encrypted input
-            * the last 2 elements are the public keys
-        */
-    ) public {
-        require(
-            msg.sender == bountyHunter,
-            "Only bounty hunter can claim bounty"
-        );
+        uint[15] memory _input
+    /*
+        * first element is the model hash
+        * the next element is the shared key
+        * the next 1001 elements are the encrypted input
+        * the last 2 elements are the public keys
+    */
+    ) onlyVsc public {
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
 
@@ -208,7 +208,7 @@ contract Bounty is Initializable, OwnableUpgradeable {
 
         // verify public keys
         require(
-            publicKeys[0] == _input[1003] && publicKeys[1] == _input[1004],
+            publicKeys[0] == _input[13] && publicKeys[1] == _input[14],
             "Public keys do not match"
         );
 
@@ -247,11 +247,11 @@ contract Bounty is Initializable, OwnableUpgradeable {
         uint[2] memory _a,
         uint[2][2] memory _b,
         uint[2] memory _c,
-        uint[1005] memory _input
+        uint[15] memory _input
     ) public view returns (bool) {
         return encryptionVerifier.verifyProof(_a, _b, _c, _input);
     }
-    
+
     // TODO: function to cancel bounty and withdraw reward
 
     // TODO: function to edit bounty details

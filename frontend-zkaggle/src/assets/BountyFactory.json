@@ -1,5 +1,5 @@
 {
-  "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  "address": "0xa98e420e5417170e55EA073FbD19Cab5aF89EfCc",
   "abi": [
     {
       "inputs": [
@@ -42,7 +42,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -55,7 +56,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -68,7 +70,22 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "encryptionVerifier",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -96,6 +113,11 @@
           "internalType": "uint256",
           "name": "_accuracyThreshold",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "vscAddress",
+          "type": "address"
         }
       ],
       "name": "createBounty",
@@ -107,20 +129,8 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "encryptionVerifier",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "payable": true
     }
   ],
   "transactionHash": "0xe18cb7773be2d70378b977a69dc78c4acbcf48cb696c23f658e0064f3aa49d38",
