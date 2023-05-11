@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDebounce } from "use-debounce";
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useChainId, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import { ethers } from "ethers";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -31,6 +31,9 @@ export default function CreateBounty() {
   const [amount, setAmount] = React.useState("1.5");
   const [debounceAmount] = useDebounce(ethers.utils.parseUnits(amount, "ether"), 500);
 
+  const { chainId } = useChainId();
+  console.log("chainId", chainId);
+
   const {
     config,
     error: prepareError,
@@ -52,6 +55,8 @@ export default function CreateBounty() {
   });
 
   console.log("config", config);
+  console.log("isError", prepareError);
+  console.log("error", isPrepareError);
 
   const { data, error, isError, write } = useContractWrite(config);
 

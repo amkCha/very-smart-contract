@@ -1,7 +1,8 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { localhost, sepolia } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
+import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BasicTabs from "./TabPanel";
@@ -14,17 +15,14 @@ const theme = createTheme({
 });
 
 const { chains, provider } = configureChains(
-  [sepolia, localhost],
-  [
-    publicProvider()
-  ]
+  [sepolia],
+  [infuraProvider({ apiKey: import.meta.env.VITE_INFURA_KEY }), publicProvider()]
 );
 const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
+  appName: "Very Smart Contract",
   chains
 });
 const wagmiClient = createClient({
-  autoConnect: true,
   connectors,
   provider
 });
