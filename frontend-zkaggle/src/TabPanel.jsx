@@ -113,7 +113,7 @@ export default function BasicTabs() {
   const [bounties, setBounties] = React.useState(initialBounties);
 
   const provider = new ethers.providers.JsonRpcProvider(
-    `https://sepolia.infura.io/v3/${process.env.VITE_INFURA_KEY}`
+    `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`
   );
 
   useContractEvent({

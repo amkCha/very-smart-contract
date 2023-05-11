@@ -51,6 +51,8 @@ export default function CreateBounty() {
     }
   });
 
+  console.log("config", config);
+
   const { data, error, isError, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({

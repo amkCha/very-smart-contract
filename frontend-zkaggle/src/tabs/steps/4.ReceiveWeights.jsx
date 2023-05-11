@@ -9,7 +9,7 @@ import bountyAbi from "../../assets/Bounty.json";
 export default function ReceiveWeights(props) {
   const [weights, setWeights] = React.useState([]);
 
-  const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${process.env.VITE_INFURA_KEY}`);
+  const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`);
 
   const fetch = async () => {
     const contract = new Contract(props.bounty.address, bountyAbi.abi, provider);

@@ -73,7 +73,7 @@ export default function SubmitBounty(props) {
   };
 
   const provider = new ethers.providers.JsonRpcProvider(
-    `https://sepolia.infura.io/v3/${process.env.VITE_INFURA_KEY}`
+    `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`
   );
   const loadCids = async () => {
     const newLinks = [];
