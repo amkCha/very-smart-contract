@@ -8,7 +8,7 @@ import MyBounties from "./tabs/MyBounties";
 import MySubmissions from "./tabs/MySubmissions";
 import Bounty from "./tabs/Bounty";
 import CreateBounty from "./tabs/CreateBounty";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectKitButton } from "connectkit";
 import { useAccount, useBalance, useContractEvent, useContractRead } from "wagmi";
 import { Contract, ethers } from "ethers";
 import BountyFactory from "./assets/BountyFactory.json";
@@ -69,10 +69,6 @@ export default function BasicTabs() {
       address: address,
       abi: bountyAbi.abi
     };
-    const { data: owner } = useContractRead({
-      ...bountyContract,
-      functionName: "owner"
-    });
     const { data: bountyHunter } = useContractRead({
       ...bountyContract,
       functionName: "bountyHunter"
@@ -100,7 +96,6 @@ export default function BasicTabs() {
 
     initialBounties.push({
       address: address,
-      owner: owner,
       bountyHunter: bountyHunter,
       name: name,
       description: description,
@@ -111,10 +106,6 @@ export default function BasicTabs() {
   }
 
   const [bounties, setBounties] = React.useState(initialBounties);
-
-  const provider = new ethers.providers.JsonRpcProvider(
-    `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`
-  );
 
   useContractEvent({
     address: BountyFactory.address,
@@ -169,7 +160,7 @@ export default function BasicTabs() {
           <Tab label="My Submissions" {...a11yProps(4)} />
           <Tab label="Create Bounty" {...a11yProps(5)} />
         </Tabs>
-        <ConnectButton />
+        <ConnectKitButton />
       </Box>
       <TabPanel value={value} index={0}>
         {!isConnected && <h2>Connect your wallet to get started</h2>}

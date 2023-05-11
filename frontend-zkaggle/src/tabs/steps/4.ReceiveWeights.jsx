@@ -3,18 +3,18 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Contract, ethers } from "ethers";
+import { Contract } from "ethers";
 import bountyAbi from "../../assets/Bounty.json";
+import { useProvider } from "wagmi";
 
 export default function ReceiveWeights(props) {
   const [weights, setWeights] = React.useState([]);
-
-  const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`);
+  const { provider } = useProvider();
 
   const fetch = async () => {
     const contract = new Contract(props.bounty.address, bountyAbi.abi, provider);
     const weights = [];
-    for (let i = 3; i < 1004; i++) {
+    for (let i = 3; i < 15; i++) {
       const weight = await contract.input(i);
       weights.push(weight);
     }

@@ -99,7 +99,7 @@ contract Bounty is Initializable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[] memory _input
-    ) onlyVsc public /*
+    ) public /*
      * n = dataCIDs.length
      * first n elements of input should be the model output
      * the next 2n elements of input should be the splitted dataCIDs
@@ -167,7 +167,7 @@ contract Bounty is Initializable {
         * only callable if bounty is not complete
         * only callable if bounty hunter has submitted proof
     */
-    function releaseBounty(uint[2] memory _publicKeys) public onlyVsc {
+    function releaseBounty(uint[2] memory _publicKeys) public {
         require(!isComplete, "Bounty is already complete");
         require(a[0] != 0, "Bounty hunter has not submitted proof");
 
@@ -196,7 +196,7 @@ contract Bounty is Initializable {
         * the next 1001 elements are the encrypted input
         * the last 2 elements are the public keys
     */
-    ) onlyVsc public {
+    ) public {
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
 

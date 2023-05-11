@@ -1,9 +1,6 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { sepolia } from "wagmi/chains";
-import { infuraProvider } from "wagmi/providers/infura";
-import { publicProvider } from "wagmi/providers/public";
+import { createClient, WagmiConfig } from "wagmi";
+import { goerli, lineaTestnet, localhost, sepolia } from "wagmi/chains";
+import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BasicTabs from "./TabPanel";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,27 +11,26 @@ const theme = createTheme({
   }
 });
 
-const { chains, provider } = configureChains(
-  [sepolia],
-  [infuraProvider({ apiKey: import.meta.env.VITE_INFURA_KEY }), publicProvider()]
+const infuraId = import.meta.env.VITE_INFURA_KEY;
+const chains = [sepolia, goerli, lineaTestnet, localhost];
+
+// Wagmi client
+const client = createClient(
+  getDefaultClient({
+    appName: "Very Smart Contract",
+    infuraId,
+    chains
+  })
 );
-const { connectors } = getDefaultWallets({
-  appName: "Very Smart Contract",
-  chains
-});
-const wagmiClient = createClient({
-  connectors,
-  provider
-});
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains} theme={darkTheme()}>
+      <WagmiConfig client={client}>
+        <ConnectKitProvider>
           <CssBaseline />
           <BasicTabs />
-        </RainbowKitProvider>
+        </ConnectKitProvider>
       </WagmiConfig>
     </ThemeProvider>
   );

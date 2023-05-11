@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDebounce } from "use-debounce";
-import { useChainId, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import { ethers } from "ethers";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -28,11 +28,10 @@ export default function CreateBounty() {
   const [accuracy, setAccuracy] = React.useState("70");
   const [debounceAccuracy] = useDebounce(accuracy, 500);
 
-  const [amount, setAmount] = React.useState("1.5");
+  const [amount, setAmount] = React.useState("0.01");
   const [debounceAmount] = useDebounce(ethers.utils.parseUnits(amount, "ether"), 500);
 
-  const { chainId } = useChainId();
-  console.log("chainId", chainId);
+  const { address } = useAccount();
 
   const {
     config,
@@ -47,7 +46,8 @@ export default function CreateBounty() {
       debounceDescription,
       debounceDataCIDs,
       debounceLabels,
-      debounceAccuracy
+      debounceAccuracy,
+      address
     ],
     overrides: {
       value: debounceAmount
@@ -140,6 +140,7 @@ export default function CreateBounty() {
       </div>
       <Button
         variant="contained"
+        disabled={isPrepareError || isLoading}
         onClick={(e) => {
           e.preventDefault();
           write?.();

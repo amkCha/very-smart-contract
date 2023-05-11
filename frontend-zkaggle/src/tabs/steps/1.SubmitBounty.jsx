@@ -1,109 +1,31 @@
 import * as React from "react";
-import lighthouse from "@lighthouse-web3/sdk";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import { useDebounce } from "use-debounce";
-import { Contract, ethers } from "ethers";
-import base32 from "base32.js";
 import bountyAbi from "../../assets/Bounty.json";
 import circuitCalldata from "../../assets/circuitCalldata.json";
 
 export default function SubmitBounty(props) {
-  const api_key = `ed89a0a.38dfd5eeb2334d9283ab4ce8979792e0`;
-  const urlPrefix = "https://gateway.lighthouse.storage/ipfs/";
   const [links, setLinks] = React.useState([]);
   const [zkey, setZkey] = React.useState("QmVMBwFdacBj4PtqwVSraSDHZUQAgpmTFTDa2DYh2pB6L4");
   const [circom, setCircom] = React.useState("QmSgPr6FktpWnR2MC67e3Ec72zoNEriquZVaemGHfS3v8d");
   const [verifier, setVerifier] = React.useState("QmYuPSkG3GPFtiuE6BL3fA3n5ad8uWP9YrQhFmsaZHGjkm");
 
-  const [verifierAddress, setVerifierAddress] = React.useState("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0");
+  const [verifierAddress, setVerifierAddress] = React.useState("0xD26a10b80b34b11523F2272dFdFD3df3f143B1C1");
   const [debounceVerifierAddress] = useDebounce(verifierAddress, 500);
 
   const [a, setA] = React.useState(circuitCalldata.a.toString());
-  const [debounceA] = useDebounce(a?.split(","), 500);
 
   const [b, setB] = React.useState(circuitCalldata.b.toString());
-  const [debounceB] = useDebounce(b?.split(","), 500);
 
   const [c, setC] = React.useState(circuitCalldata.c.toString());
-  const [debounceC] = useDebounce(c?.split(","), 500);
 
   const [input, setInput] = React.useState(circuitCalldata.input.toString());
-  const [debounceInput] = useDebounce(input?.split(","), 500);
 
-  const progressCallback = (progressData) => {
-    let percentageDone =
-      100 - (progressData?.total / progressData?.uploaded)?.toFixed(2);
-    console.log(percentageDone);
-  };
-
-  const uploadZkey = async (e) => {
-    // console.log('File Status:', e);
-    // const output = await lighthouse.upload('/home/amelie/Téléchargements/1829045.png', 'ed89a0a.38dfd5eeb2334d9283ab4ce8979792e0', progressCallback);
-    // console.log('File Status:', output);
-    // console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
-    // setZkey(output.data.Hash);
-    // console.log('okay for QmVMBwFdacBj4PtqwVSraSDHZUQAgpmTFTDa2DYh2pB6L4');
-    setZkey("QmVMBwFdacBj4PtqwVSraSDHZUQAgpmTFTDa2DYh2pB6L4");
-    console.log(Buffer.from(zkey));
-  };
-
-  const uploadCircom = async (e) => {
-    const output = await lighthouse.upload("/home/amelie/Téléchargements/1829045.png", "ed89a0a.38dfd5eeb2334d9283ab4ce8979792e0", progressCallback);
-    // console.log('File Status:', output);
-    // console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
-    // setCircom(output.data.Hash);
-    // console.log('okay for QmSgPr6FktpWnR2MC67e3Ec72zoNEriquZVaemGHfS3v8d');
-    setCircom("QmVMBwFdacBj4PtqwVSraSDHZUQAgpmTFTDa2DYh2pB6L4");
-    console.log(Buffer.from(circom));
-  };
-
-  const uploadVerifier = async (e) => {
-    // const output = await lighthouse.upload('/home/amelie/Téléchargements/1829045.png', 'ed89a0a.38dfd5eeb2334d9283ab4ce8979792e0', progressCallback);
-    // console.log('File Status:', output);
-    // console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
-    // setVerifier(output.data.Hash);
-    // console.log('okay for QmYuPSkG3GPFtiuE6BL3fA3n5ad8uWP9YrQhFmsaZHGjkm');
-    setVerifier("QmVMBwFdacBj4PtqwVSraSDHZUQAgpmTFTDa2DYh2pB6L4");
-    console.log(Buffer.from(verifier));
-  };
-
-  const provider = new ethers.providers.JsonRpcProvider(
-    `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`
-  );
-  const loadCids = async () => {
-    const newLinks = [];
-    const contract = new Contract(
-      props.bounty.address,
-      bountyAbi.abi,
-      provider
-    );
-    let index = 0;
-    let ok = true;
-    while (ok) {
-      await contract.dataCIDs(index)
-        .then((cid) => {
-          console.log(cid);
-          const encoder = new base32.Encoder();
-          const CID =
-            "b" +
-            encoder
-              .write(ethers.utils.arrayify(cid))
-              .finalize()
-              .toLowerCase();
-          newLinks.push(urlPrefix + CID);
-          index++;
-        })
-        .catch((err) => {
-          ok = false;
-        });
-    }
-    setLinks(newLinks);
-  };
+  let utf8Encode = new TextEncoder();
 
   const {
     config,
@@ -114,24 +36,30 @@ export default function SubmitBounty(props) {
     abi: bountyAbi.abi,
     functionName: "submitBounty",
     args: [
-      Buffer.from(zkey),
-      Buffer.from(circom),
-      Buffer.from(verifier),
-      debounceVerifierAddress,
-      debounceA,
-      [[debounceB[0], debounceB[1]], [debounceB[2], debounceB[3]]],
-      debounceC,
-      debounceInput
+      utf8Encode.encode(zkey),
+      utf8Encode.encode(circom),
+      utf8Encode.encode(verifier),
+      verifierAddress,
+      a.split(","),
+      [[b.split(",")[0], b.split(",")[1]], [b.split(",")[2], b.split(",")[3]]],
+      c.split(","),
+      input.split(","),
+      {
+        gasLimit: 1300000
+      }
     ]
   });
-
-  console.log("prepare", zkey);
 
   const { data, error, isError, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash
   });
+
+  console.log("config", config);
+  console.log("write", write);
+  console.log("isPrepareError", isPrepareError);
+  console.log("prepareError", prepareError);
 
   return (
     <div>
@@ -209,7 +137,6 @@ export default function SubmitBounty(props) {
             id="verifier-address"
             label="Verifier Address"
             value={verifierAddress}
-            onChange={(event) => setVerifierAddress(event.target.value)}
           />
         </div>
         <div>
@@ -218,7 +145,6 @@ export default function SubmitBounty(props) {
             id="a"
             label="a"
             value={a}
-            onChange={(event) => setA(event.target.value)}
           />
         </div>
         <div>
@@ -227,7 +153,6 @@ export default function SubmitBounty(props) {
             id="b"
             label="b"
             value={b}
-            onChange={(event) => setB(event.target.value)}
           />
         </div>
         <div>
@@ -236,7 +161,6 @@ export default function SubmitBounty(props) {
             id="c"
             label="c"
             value={c}
-            onChange={(event) => setC(event.target.value)}
           />
         </div>
         <div>
@@ -245,22 +169,16 @@ export default function SubmitBounty(props) {
             id="input"
             label="input"
             value={input}
-            onChange={(event) => setInput(event.target.value)}
           />
         </div>
         <Button
           variant="contained"
-          disabled={isLoading}
           onClick={(e) => {
             e.preventDefault();
             write?.();
           }}>
           Submit
         </Button>
-        {(isPrepareError || isError) &&
-          <Alert severity="error">{(prepareError || error)?.message?.split(", method")[0]}</Alert>}
-        {isLoading && <Alert severity="info">Waiting for transaction to be mined...</Alert>}
-        {isSuccess && <Alert severity="success">Transaction mined!</Alert>}
       </Box>
     </div>
   );
