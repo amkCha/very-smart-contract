@@ -122,15 +122,15 @@ contract Bounty is Initializable {
         for (uint i = 0; i < dataCIDs.length; i++) {
             require(
                 keccak256(dataCIDs[i]) ==
-                    keccak256(
-                        abi.encodePacked(
-                            CID_VERSION,
-                            CID_CODEC,
-                            CID_HASH,
-                            CID_LENGTH,
-                            concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
-                        )
-                    ),
+                keccak256(
+                    abi.encodePacked(
+                        CID_VERSION,
+                        CID_CODEC,
+                        CID_HASH,
+                        CID_LENGTH,
+                        concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
+                    )
+                ),
                 "Data CID mismatch"
             );
         }
@@ -181,12 +181,12 @@ contract Bounty is Initializable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[15] memory _input
-        /*
-         * first element is the model hash
-         * the next element is the shared key
-         * the next 1001 elements are the encrypted input
-         * the last 2 elements are the public keys
-         */
+    /*
+     * first element is the model hash
+     * the next element is the shared key
+     * the next 1001 elements are the encrypted input
+     * the last 2 elements are the public keys
+     */
     ) public {
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
@@ -198,10 +198,10 @@ contract Bounty is Initializable {
         require(publicKeys[0] == _input[13] && publicKeys[1] == _input[14], "Public keys do not match");
 
         // verify encryption
-        /*require(
+        require(
             encryptionVerifier.verifyProof(_a, _b, _c, _input),
             "Invalid encryption"
-        );*/
+        );
         input = _input;
         payable(msg.sender).transfer(address(this).balance);
 
