@@ -30,25 +30,6 @@
       "type": "event"
     },
     {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
       "inputs": [],
       "name": "CID_CODEC",
       "outputs": [
@@ -202,34 +183,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256[2]",
-          "name": "_a",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[2][2]",
-          "name": "_b",
-          "type": "uint256[2][2]"
-        },
-        {
-          "internalType": "uint256[2]",
-          "name": "_c",
-          "type": "uint256[2]"
-        },
-        {
-          "internalType": "uint256[1005]",
-          "name": "_input",
-          "type": "uint256[1005]"
-        }
-      ],
-      "name": "claimBounty",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "completedStep",
       "outputs": [
@@ -240,30 +193,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "input1",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "input2",
-          "type": "uint256"
-        }
-      ],
-      "name": "concatDigest",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -309,49 +238,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_description",
-          "type": "string"
-        },
-        {
-          "internalType": "bytes[]",
-          "name": "_dataCIDs",
-          "type": "bytes[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "_labels",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_accuracyThreshold",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_encryptionVerifier",
-          "type": "address"
-        }
-      ],
-      "name": "initialize",
-      "outputs": [],
-      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -432,19 +318,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -464,23 +337,98 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "verifier",
+      "outputs": [
         {
-          "internalType": "uint256[2]",
-          "name": "_publicKeys",
-          "type": "uint256[2]"
+          "internalType": "contract ICircuitVerifier",
+          "name": "",
+          "type": "address"
         }
       ],
-      "name": "releaseBounty",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "renounceOwnership",
+      "name": "verifierCID",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vscAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "zkeyCID",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "_dataCIDs",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_labels",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_accuracyThreshold",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_encryptionVerifier",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_vscAddress",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -534,40 +482,14 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
+          "internalType": "uint256[2]",
+          "name": "_publicKeys",
+          "type": "uint256[2]"
         }
       ],
-      "name": "transferOwnership",
+      "name": "releaseBounty",
       "outputs": [],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "verifier",
-      "outputs": [
-        {
-          "internalType": "contract ICircuitVerifier",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "verifierCID",
-      "outputs": [
-        {
-          "internalType": "bytes",
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -588,20 +510,38 @@
           "type": "uint256[2]"
         },
         {
-          "internalType": "uint256[1005]",
+          "internalType": "uint256[15]",
           "name": "_input",
-          "type": "uint256[1005]"
+          "type": "uint256[15]"
         }
       ],
-      "name": "verifyEncryption",
+      "name": "claimBounty",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "input1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "input2",
+          "type": "uint256"
+        }
+      ],
+      "name": "concatDigest",
       "outputs": [
         {
-          "internalType": "bool",
+          "internalType": "bytes32",
           "name": "",
-          "type": "bool"
+          "type": "bytes32"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -639,13 +579,34 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "zkeyCID",
+      "inputs": [
+        {
+          "internalType": "uint256[2]",
+          "name": "_a",
+          "type": "uint256[2]"
+        },
+        {
+          "internalType": "uint256[2][2]",
+          "name": "_b",
+          "type": "uint256[2][2]"
+        },
+        {
+          "internalType": "uint256[2]",
+          "name": "_c",
+          "type": "uint256[2]"
+        },
+        {
+          "internalType": "uint256[15]",
+          "name": "_input",
+          "type": "uint256[15]"
+        }
+      ],
+      "name": "verifyEncryption",
       "outputs": [
         {
-          "internalType": "bytes",
+          "internalType": "bool",
           "name": "",
-          "type": "bytes"
+          "type": "bool"
         }
       ],
       "stateMutability": "view",

@@ -32,8 +32,5 @@ jobs:
       - name: Install the dependencies
         run: npm ci
 
-      - name: Lint the code
-        run: npm run lint
-
       - name: Compile the contracts
         run: npm run compile

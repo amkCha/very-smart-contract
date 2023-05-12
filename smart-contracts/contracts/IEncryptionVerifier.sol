@@ -7,6 +7,6 @@ interface IEncryptionVerifier {
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[1005] memory input
+        uint[15] memory input
     ) external view returns (bool);
 }

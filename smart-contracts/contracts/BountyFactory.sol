@@ -23,18 +23,19 @@ contract BountyFactory {
         string memory _description,
         bytes[] memory _dataCIDs,
         uint[] memory _labels,
-        uint _accuracyThreshold
+        uint _accuracyThreshold,
+        address vscAddress
     ) public payable returns (address) {
         require(msg.value > 0, "BountyFactory: must send more than 0 wei to create bounty");
         address clone = Clones.clone(bountyTemplate);
-        Bounty(clone).initialize{value: msg.value}(
-            msg.sender,
+        Bounty(clone).initialize{ value: msg.value }(
             _name,
             _description,
             _dataCIDs,
             _labels,
             _accuracyThreshold,
-            encryptionVerifier
+            encryptionVerifier,
+            vscAddress
         );
         bounties.push(clone);
         emit BountyCreated(clone);
