@@ -1,20 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createClient, WagmiConfig } from 'wagmi';
-import { sepolia, goerli, lineaTestnet } from 'wagmi/chains';
+import { goerli, lineaTestnet, sepolia } from 'wagmi/chains';
 import { ConnectKitProvider, getDefaultClient } from 'connectkit';
+import NFTS from './components/NFT/NFTS';
 
 const chains = [sepolia, goerli, lineaTestnet];
-const infuraId = process.env.REACT_APP_INFURA_API_KEY;
 
 const client = createClient(
   getDefaultClient({
     appName: 'Very Smart Contract',
-    infuraId,
     chains,
   }),
 );
@@ -24,7 +23,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <WagmiConfig client={client}>
       <ConnectKitProvider>
         <BrowserRouter>
-          <App />
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/nfts" element={<NFTS />} />
+          </Routes>
         </BrowserRouter>
       </ConnectKitProvider>
     </WagmiConfig>
