@@ -28,7 +28,7 @@ contract BountyFactory {
     ) public payable returns (address) {
         require(msg.value > 0, "BountyFactory: must send more than 0 wei to create bounty");
         address clone = Clones.clone(bountyTemplate);
-        Bounty(clone).initialize{value: msg.value}(
+        Bounty(clone).initialize{ value: msg.value }(
             _name,
             _description,
             _dataCIDs,

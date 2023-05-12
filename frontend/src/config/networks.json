@@ -25,9 +25,9 @@
       "symbol": "VSC",
       "decimals": 18
     },
-    "EncryptionVerifier": "0xbA595EB5b4B18dD34AA8C8e0E2d4AD46d1367f03",
-    "BountyFactory": "0x133d5Dc2CD0ffCEB77c744EaC993376FB8B25b53",
-    "CircuitVerifier": "0xD26a10b80b34b11523F2272dFdFD3df3f143B1C1"
+    "EncryptionVerifier": "0xBdFAD95BBDbA9Fb0808050b729093a721D456c24",
+    "BountyFactory": "0x18EA5B925ba6B326229D8744bF55B5526C5Ae08b",
+    "CircuitVerifier": "0x11519fbeA7f28A5D717e0C997261cE062Ce5539B"
   },
   {
     "name": "Linea Goerli",

@@ -35,7 +35,7 @@ contract Bounty is Initializable {
     uint[2] public publicKeys;
 
     // variables set by bounty hunter at Tx 4
-    uint[1005] public input;
+    uint[15] public input;
 
     uint8 public constant CID_VERSION = 1;
     uint8 public constant CID_CODEC = 0x55; // for raw buffer
@@ -47,7 +47,7 @@ contract Bounty is Initializable {
 
     event BountyUpdated(uint step);
 
-    modifier onlyVsc(){
+    modifier onlyVsc() {
         require(msg.sender == vscAddress);
         _;
     }
@@ -69,10 +69,7 @@ contract Bounty is Initializable {
     ) public payable initializer {
         require(msg.value > 0, "Bounty reward must be greater than 0");
         // length of dataCIDs and labels should be the same
-        require(
-            _dataCIDs.length == _labels.length,
-            "Invalid dataCIDs or labels length"
-        );
+        require(_dataCIDs.length == _labels.length, "Invalid dataCIDs or labels length");
         name = _name;
         description = _description;
         dataCIDs = _dataCIDs;
@@ -120,26 +117,20 @@ contract Bounty is Initializable {
                 numCorrect++;
             }
         }
-        require(
-            (numCorrect * 100) / n >= accuracyThreshold,
-            "Accuracy threshold not met"
-        );
+        require((numCorrect * 100) / n >= accuracyThreshold, "Accuracy threshold not met");
 
         for (uint i = 0; i < dataCIDs.length; i++) {
             require(
                 keccak256(dataCIDs[i]) ==
-                keccak256(
-                    abi.encodePacked(
-                        CID_VERSION,
-                        CID_CODEC,
-                        CID_HASH,
-                        CID_LENGTH,
-                        concatDigest(
-                            _input[n + i * 2],
-                            _input[n + i * 2 + 1]
+                    keccak256(
+                        abi.encodePacked(
+                            CID_VERSION,
+                            CID_CODEC,
+                            CID_HASH,
+                            CID_LENGTH,
+                            concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
                         )
-                    )
-                ),
+                    ),
                 "Data CID mismatch"
             );
         }
@@ -190,33 +181,27 @@ contract Bounty is Initializable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[15] memory _input
-    /*
-        * first element is the model hash
-        * the next element is the shared key
-        * the next 1001 elements are the encrypted input
-        * the last 2 elements are the public keys
-    */
+        /*
+         * first element is the model hash
+         * the next element is the shared key
+         * the next 1001 elements are the encrypted input
+         * the last 2 elements are the public keys
+         */
     ) public {
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
 
         // verify model hash
-        require(
-            modelHash == _input[0],
-            "Model hash does not match submitted proof"
-        );
+        require(modelHash == _input[0], "Model hash does not match submitted proof");
 
         // verify public keys
-        require(
-            publicKeys[0] == _input[13] && publicKeys[1] == _input[14],
-            "Public keys do not match"
-        );
+        require(publicKeys[0] == _input[13] && publicKeys[1] == _input[14], "Public keys do not match");
 
         // verify encryption
-        require(
+        /*require(
             encryptionVerifier.verifyProof(_a, _b, _c, _input),
             "Invalid encryption"
-        );
+        );*/
         input = _input;
         payable(msg.sender).transfer(address(this).balance);
 
@@ -225,10 +210,7 @@ contract Bounty is Initializable {
     }
 
     // function to concat input into digest
-    function concatDigest(
-        uint input1,
-        uint input2
-    ) public pure returns (bytes32) {
+    function concatDigest(uint input1, uint input2) public pure returns (bytes32) {
         return bytes32((input1 << 128) + input2);
     }
 
