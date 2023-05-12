@@ -14,3 +14,15 @@ interface ERC20 {
   symbol: string;
   decimals: number;
 }
+
+interface Collection {
+  contract: string;
+  name: string;
+}
+
+interface NFT {
+  tokenId: string;
+  name: string;
+  collection: Collection;
+  image: string;
+}
