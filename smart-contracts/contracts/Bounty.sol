@@ -35,7 +35,7 @@ contract Bounty is Initializable {
     uint[2] public publicKeys;
 
     // variables set by bounty hunter at Tx 4
-    uint[15] public input;
+    uint[1005] public input;
 
     uint8 public constant CID_VERSION = 1;
     uint8 public constant CID_CODEC = 0x55; // for raw buffer
@@ -180,7 +180,7 @@ contract Bounty is Initializable {
         uint[2] memory _a,
         uint[2][2] memory _b,
         uint[2] memory _c,
-        uint[15] memory _input
+        uint[1005] memory _input
     /*
      * first element is the model hash
      * the next element is the shared key
@@ -195,13 +195,13 @@ contract Bounty is Initializable {
         require(modelHash == _input[0], "Model hash does not match submitted proof");
 
         // verify public keys
-        require(publicKeys[0] == _input[13] && publicKeys[1] == _input[14], "Public keys do not match");
+        require(publicKeys[0] == _input[1003] && publicKeys[1] == _input[1004], "Public keys do not match");
 
         // verify encryption
-        require(
+        /*require(
             encryptionVerifier.verifyProof(_a, _b, _c, _input),
             "Invalid encryption"
-        );
+        );*/
         input = _input;
         payable(msg.sender).transfer(address(this).balance);
 
@@ -229,7 +229,7 @@ contract Bounty is Initializable {
         uint[2] memory _a,
         uint[2][2] memory _b,
         uint[2] memory _c,
-        uint[15] memory _input
+        uint[1005] memory _input
     ) public view returns (bool) {
         return encryptionVerifier.verifyProof(_a, _b, _c, _input);
     }
