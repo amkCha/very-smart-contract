@@ -14,7 +14,7 @@ export default function SubmitBounty(props) {
   const [circom, setCircom] = React.useState("QmSgPr6FktpWnR2MC67e3Ec72zoNEriquZVaemGHfS3v8d");
   const [verifier, setVerifier] = React.useState("QmYuPSkG3GPFtiuE6BL3fA3n5ad8uWP9YrQhFmsaZHGjkm");
 
-  const [verifierAddress, setVerifierAddress] = React.useState("0x11519fbeA7f28A5D717e0C997261cE062Ce5539B");
+  const [verifierAddress, setVerifierAddress] = React.useState("0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15");
   const [debounceVerifierAddress] = useDebounce(verifierAddress, 500);
 
   const [a, setA] = React.useState(circuitCalldata.a.toString());

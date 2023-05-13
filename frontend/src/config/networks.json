@@ -25,9 +25,9 @@
       "symbol": "VSC",
       "decimals": 18
     },
-    "EncryptionVerifier": "0xBdFAD95BBDbA9Fb0808050b729093a721D456c24",
-    "BountyFactory": "0x18EA5B925ba6B326229D8744bF55B5526C5Ae08b",
-    "CircuitVerifier": "0x11519fbeA7f28A5D717e0C997261cE062Ce5539B"
+    "EncryptionVerifier": "0x7de9a176619bfE2AD08F4aE11BEE7f631B10a4Eb",
+    "BountyFactory": "0xf7634F49Dd13b2d36434D28254570eDCF96f72A0",
+    "CircuitVerifier": "0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15"
   },
   {
     "name": "Linea Goerli",
@@ -40,8 +40,8 @@
       "symbol": "VSC",
       "decimals": 18
     },
-    "EncryptionVerifier": "0x7de9a176619bfE2AD08F4aE11BEE7f631B10a4Eb",
-    "BountyFactory": "0xCB589Af8dd12aE1C378FD630f9B0e10e597C06c5",
-    "CircuitVerifier": "0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15"
+    "EncryptionVerifier": "0x940a8D7EEc5f88C36D0686Cd123Fb0C369FA3F1d",
+    "BountyFactory": "0xBe626E88AB9dDF2a1c22d4Fc96A5B596492bFA21",
+    "CircuitVerifier": "0x50B3b1a205Fa5869132720592b5E2b3175Fe8654"
   }
 ]

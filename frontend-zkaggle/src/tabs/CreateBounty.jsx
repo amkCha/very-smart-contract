@@ -28,7 +28,7 @@ export default function CreateBounty() {
   const [accuracy, setAccuracy] = React.useState("70");
   const [debounceAccuracy] = useDebounce(accuracy, 500);
 
-  const [amount, setAmount] = React.useState("0.01");
+  const [amount, setAmount] = React.useState("0.0001");
   const [debounceAmount] = useDebounce(ethers.utils.parseUnits(amount, "ether"), 500);
 
   const { address } = useAccount();

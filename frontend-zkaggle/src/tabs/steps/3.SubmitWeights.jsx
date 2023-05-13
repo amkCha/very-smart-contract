@@ -52,7 +52,7 @@ export default function SubmitWeights(props) {
       debounceC,
       debounceInput,
       {
-        gasLimit: 1300000
+        gasLimit: 30000000
       }
     ]
   });
