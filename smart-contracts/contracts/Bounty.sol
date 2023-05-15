@@ -3,8 +3,10 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./ICircuitVerifier.sol";
 import "./IEncryptionVerifier.sol";
+import "./VSC.sol";
 
 contract Bounty is Initializable {
     uint public completedStep;
@@ -203,7 +205,16 @@ contract Bounty is Initializable {
             "Invalid encryption"
         );*/
         input = _input;
-        payable(msg.sender).transfer(address(this).balance);
+
+        // pay the NFT creators and the bounty hunter
+        uint nbNFTCreators = VSC(vscAddress).nbNFTCreators();
+        uint256 share;
+        // divide balance per share for all NFTCreators and bounty hunter
+        share = SafeMath.div(address(this).balance, nbNFTCreators + 1);
+        for (uint i = 0; i < nbNFTCreators; i++) {
+            payable(VSC(vscAddress).NFTCreators(i)).transfer(share);
+        }
+        payable(msg.sender).transfer(share);
 
         emit BountyUpdated(4);
         completedStep = 4;
