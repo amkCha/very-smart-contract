@@ -98,13 +98,13 @@ contract Bounty is Initializable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[] memory _input
-    ) public /*
-     * n = dataCIDs.length
-     * first n elements of input should be the model output
-     * the next 2n elements of input should be the splitted dataCIDs
-     * the last element is the model hash
-     */
-    {
+        /*
+         * n = dataCIDs.length
+         * first n elements of input should be the model output
+         * the next 2n elements of input should be the splitted dataCIDs
+         * the last element is the model hash
+         */
+    ) public {
         require(bountyHunter == address(0), "Bounty already submitted");
         // verifier address should not be 0x0
         require(_verifier != address(0), "Invalid verifier address");
@@ -124,15 +124,15 @@ contract Bounty is Initializable {
         for (uint i = 0; i < dataCIDs.length; i++) {
             require(
                 keccak256(dataCIDs[i]) ==
-                keccak256(
-                    abi.encodePacked(
-                        CID_VERSION,
-                        CID_CODEC,
-                        CID_HASH,
-                        CID_LENGTH,
-                        concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
-                    )
-                ),
+                    keccak256(
+                        abi.encodePacked(
+                            CID_VERSION,
+                            CID_CODEC,
+                            CID_HASH,
+                            CID_LENGTH,
+                            concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
+                        )
+                    ),
                 "Data CID mismatch"
             );
         }
@@ -178,18 +178,13 @@ contract Bounty is Initializable {
         * only callable if bounty is complete
         * _input
     */
-    function claimBounty(
-        uint[2] memory _a,
-        uint[2][2] memory _b,
-        uint[2] memory _c,
-        uint[1005] memory _input
-    /*
+    function claimBounty(uint[2] memory _a, uint[2][2] memory _b, uint[2] memory _c, uint[1005] memory _input) public /*
      * first element is the model hash
      * the next element is the shared key
      * the next 1001 elements are the encrypted input
      * the last 2 elements are the public keys
      */
-    ) public {
+    {
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
 

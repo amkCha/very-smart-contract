@@ -3,7 +3,6 @@
 pragma solidity ^0.8.17;
 
 contract Pairing900 {
-
     struct G1Point {
         uint X;
         uint Y;
@@ -12,7 +11,6 @@ contract Pairing900 {
     G1Point[100] public vk;
 
     constructor() {
-
         vk[0] = G1Point(
             18307463072870674736741132489299673350923024551765424057435422228540653970783,
             16792651768640733615873201158696903896357564953934877895980220834108412218261

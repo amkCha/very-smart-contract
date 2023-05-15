@@ -1,4 +1,5 @@
 const EncryptionVerifier = artifacts.require("EncryptionVerifier");
+const VSC = artifacts.require("VSC");
 const BountyFactory = artifacts.require("BountyFactory");
 const CircuitVerifier = artifacts.require("CircuitVerifier");
 const Pairing100 = artifacts.require("Pairing100");
@@ -36,7 +37,9 @@ module.exports = async function (deployer) {
   pairings.push(await Pairing1000.deployed());
 
   await deployer.deploy(EncryptionVerifier, pairings);
-  const instance = await EncryptionVerifier.deployed();
-  await deployer.deploy(BountyFactory, instance.address);
+  const encryptionVerifierInstance = await EncryptionVerifier.deployed();
+  await deployer.deploy(VSC);
+  const vscInstance = await VSC.deployed();
+  await deployer.deploy(BountyFactory, encryptionVerifierInstance.address, vscInstance.address);
   await deployer.deploy(CircuitVerifier);
 };

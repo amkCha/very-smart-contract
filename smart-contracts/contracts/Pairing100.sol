@@ -3,7 +3,6 @@
 pragma solidity ^0.8.17;
 
 contract Pairing100 {
-
     struct G1Point {
         uint X;
         uint Y;
