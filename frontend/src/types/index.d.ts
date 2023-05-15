@@ -6,6 +6,7 @@ export interface Network {
   nativeCurrencySymbol: string;
   explorerURL: string;
   vscCoin: ERC20;
+  VSC: Address;
 }
 
 interface ERC20 {

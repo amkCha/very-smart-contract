@@ -9,6 +9,7 @@ import { LineWave } from 'react-loader-spinner';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Footer from '../Footer';
+import { Link } from 'react-router-dom';
 
 interface IProps {}
 
@@ -72,7 +73,9 @@ const NFTS: React.FC<IProps> = () => {
   const getRecommendations = async () => {
     setLoadingRecommendations(true);
     await delay(2000);
-    const recNfts = ownedNfts.sort(() => 0.5 - Math.random());
+    const recNfts: NFT[] = [];
+    ownedNfts.forEach((val) => recNfts.push(Object.assign({}, val)));
+    recNfts.sort(() => 0.5 - Math.random());
     setRecommendedNfts(recNfts);
     setLoadingRecommendations(false);
   };
@@ -112,15 +115,9 @@ const NFTS: React.FC<IProps> = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <div
-            onClick={getRecommendations}
-            onKeyDown={getRecommendations}
-            tabIndex={0}
-            role="button"
-            style={{ cursor: 'pointer' }}
-          >
+          <Link to={'/'}>
             <img src={vscLogo} alt={'VSC logo'} />
-          </div>
+          </Link>
         </Grid>
         <Grid item xs={5}>
           <Box>

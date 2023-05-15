@@ -41,7 +41,8 @@
       "decimals": 18
     },
     "EncryptionVerifier": "0x940a8D7EEc5f88C36D0686Cd123Fb0C369FA3F1d",
-    "BountyFactory": "0xBe626E88AB9dDF2a1c22d4Fc96A5B596492bFA21",
-    "CircuitVerifier": "0x50B3b1a205Fa5869132720592b5E2b3175Fe8654"
+    "BountyFactory": "0x26Cd4052cA921631a9bB6Ec9E6b55878e109a1Bf",
+    "CircuitVerifier": "0x50B3b1a205Fa5869132720592b5E2b3175Fe8654",
+    "VSC": "0xf75De6f782A2ad60f53f3Df01F3b86D9332f9881"
   }
 ]

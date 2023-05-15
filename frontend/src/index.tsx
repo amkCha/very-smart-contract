@@ -8,6 +8,8 @@ import { createClient, WagmiConfig } from 'wagmi';
 import { goerli, lineaTestnet, sepolia } from 'wagmi/chains';
 import { ConnectKitProvider, getDefaultClient } from 'connectkit';
 import NFTS from './components/NFT/NFTS';
+import Creator from './components/Creator/Creator';
+import Selector from './components/Selector';
 
 const chains = [sepolia, goerli, lineaTestnet];
 
@@ -24,8 +26,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ConnectKitProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route path="/" element={<Selector />} />
             <Route path="/nfts" element={<NFTS />} />
+            <Route path="/creator" element={<Creator />} />
+            <Route path="/coin" element={<App />} />
           </Routes>
         </BrowserRouter>
       </ConnectKitProvider>

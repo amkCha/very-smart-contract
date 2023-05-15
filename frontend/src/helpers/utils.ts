@@ -14,6 +14,7 @@ const defaultNetwork: Network = {
   nativeCurrencySymbol: '',
   explorerURL: '',
   vscCoin: defaultVSCCoin,
+  VSC: '0x0',
 };
 
 export const getNetworkPerChainId = (chainId?: number): Network => {
