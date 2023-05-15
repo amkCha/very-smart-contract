@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { useAccount } from 'wagmi';
-import SingleNft from './SingleNft';
 import { Collection, NFT } from '../../types';
 import vscLogo from '../../assets/img/vsc-logo.png';
 import button from '../../assets/img/button.svg';
 import { LineWave } from 'react-loader-spinner';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import Footer from '../Footer';
 
 interface IProps {}
 
@@ -100,88 +102,101 @@ const NFTS: React.FC<IProps> = () => {
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid
-        item
-        xs={12}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <div
-          onClick={getRecommendations}
-          onKeyDown={getRecommendations}
-          tabIndex={0}
-          role="button"
-          style={{ cursor: 'pointer' }}
+    <>
+      <Grid container spacing={2} padding={2}>
+        <Grid
+          item
+          xs={12}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
         >
-          <img src={vscLogo} alt={'VSC logo'} />
-        </div>
-      </Grid>
-      <Grid item xs={5}>
-        <Box
-          sx={{
-            m: 5,
-          }}
-        >
-          <Paper elevation={0}>
-            <Typography variant="h5" component="div" gutterBottom>
-              Your NFTs
-            </Typography>
-            <Grid container spacing={2}>
-              {ownedNfts.length
-                ? ownedNfts.map((nft: NFT) => (
-                    <Grid
-                      item
-                      xs={6}
-                      key={`${nft.collection.contract}_${nft.tokenId}`}
-                    >
-                      <SingleNft nft={nft} />
-                    </Grid>
-                  ))
-                : displayLoader()}
-            </Grid>
-          </Paper>
-        </Box>
-      </Grid>
-      <Grid item xs={2}>
-        <div
-          onClick={getRecommendations}
-          onKeyDown={getRecommendations}
-          tabIndex={0}
-          role="button"
-          style={{ cursor: 'pointer' }}
-        >
-          <img src={button} alt={'Click me'} width={'90%'} />
-        </div>
-      </Grid>
-      <Grid item xs={5}>
-        <Box
-          sx={{
-            m: 5,
-          }}
-        >
-          <Paper elevation={0}>
-            <Typography variant="h5" component="div" gutterBottom>
-              Our recommendations
-            </Typography>
-            <Grid container spacing={2}>
-              {loadingRecommendations
-                ? displayLoader()
-                : recommendedNfts.map((nft: NFT) => (
-                    <Grid
-                      item
-                      xs={6}
-                      key={`${nft.collection.contract}_${nft.tokenId}`}
-                    >
-                      <SingleNft nft={nft} />
-                    </Grid>
+          <div
+            onClick={getRecommendations}
+            onKeyDown={getRecommendations}
+            tabIndex={0}
+            role="button"
+            style={{ cursor: 'pointer' }}
+          >
+            <img src={vscLogo} alt={'VSC logo'} />
+          </div>
+        </Grid>
+        <Grid item xs={5}>
+          <Box>
+            <Paper elevation={0} style={{ backgroundColor: 'transparent' }}>
+              <Typography variant="h5" component="div" gutterBottom>
+                Your NFTs
+              </Typography>
+              {ownedNfts.length ? (
+                <ImageList
+                  sx={{ width: '100%', height: '73vh' }}
+                  variant="quilted"
+                  cols={3}
+                  rowHeight={200}
+                >
+                  {ownedNfts.map((item) => (
+                    <ImageListItem key={item.image} cols={1} rows={1}>
+                      <img
+                        src={`${item.image}`}
+                        alt={item.name}
+                        loading="lazy"
+                      />
+                    </ImageListItem>
                   ))}
-            </Grid>
-          </Paper>
-        </Box>
+                </ImageList>
+              ) : (
+                displayLoader()
+              )}
+            </Paper>
+          </Box>
+        </Grid>
+        <Grid item xs={2} display="flex" alignItems="center">
+          {Boolean(ownedNfts.length) && (
+            <div
+              onClick={getRecommendations}
+              onKeyDown={getRecommendations}
+              tabIndex={0}
+              role="button"
+              style={{ cursor: 'pointer', margin: 'auto' }}
+            >
+              <img src={button} alt={'Click me'} width={'90%'} />
+            </div>
+          )}
+        </Grid>
+        <Grid item xs={5}>
+          <Box>
+            <Paper elevation={0} style={{ backgroundColor: 'transparent' }}>
+              <Typography variant="h5" component="div" gutterBottom>
+                Our recommendations
+              </Typography>
+              {loadingRecommendations ? (
+                displayLoader()
+              ) : (
+                <ImageList
+                  sx={{ width: '100%', height: '73vh' }}
+                  variant="woven"
+                  cols={3}
+                  rowHeight={200}
+                >
+                  {recommendedNfts
+                    .sort(() => 0.5 - Math.random())
+                    .map((item) => (
+                      <ImageListItem key={item.image} cols={1} rows={1}>
+                        <img
+                          src={`${item.image}`}
+                          alt={item.name}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    ))}
+                </ImageList>
+              )}
+            </Paper>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+      <Footer />
+    </>
   );
 };
 
