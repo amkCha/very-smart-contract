@@ -72,7 +72,8 @@ const NFTS: React.FC<IProps> = () => {
   const getRecommendations = async () => {
     setLoadingRecommendations(true);
     await delay(2000);
-    setRecommendedNfts(ownedNfts);
+    const recNfts = ownedNfts.sort(() => 0.5 - Math.random());
+    setRecommendedNfts(recNfts);
     setLoadingRecommendations(false);
   };
 
@@ -178,17 +179,15 @@ const NFTS: React.FC<IProps> = () => {
                   cols={3}
                   rowHeight={200}
                 >
-                  {recommendedNfts
-                    .sort(() => 0.5 - Math.random())
-                    .map((item) => (
-                      <ImageListItem key={item.image} cols={1} rows={1}>
-                        <img
-                          src={`${item.image}`}
-                          alt={item.name}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
+                  {recommendedNfts.map((item) => (
+                    <ImageListItem key={item.image} cols={1} rows={1}>
+                      <img
+                        src={`${item.image}`}
+                        alt={item.name}
+                        loading="lazy"
+                      />
+                    </ImageListItem>
+                  ))}
                 </ImageList>
               )}
             </Paper>
