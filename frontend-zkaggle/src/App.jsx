@@ -11,14 +11,12 @@ const theme = createTheme({
   }
 });
 
-const infuraId = import.meta.env.VITE_INFURA_KEY;
 const chains = [sepolia, goerli, lineaTestnet, localhost];
 
 // Wagmi client
 const client = createClient(
   getDefaultClient({
     appName: "Very Smart Contract",
-    infuraId,
     chains
   })
 );
