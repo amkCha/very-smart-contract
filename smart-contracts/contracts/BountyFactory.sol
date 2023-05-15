@@ -10,11 +10,13 @@ contract BountyFactory {
     address public immutable bountyTemplate;
     address[] public bounties;
     uint public bountyCount;
+    address public vscAddress;
 
     event BountyCreated(address indexed bounty);
 
-    constructor(address _encryptionVerifier) {
+    constructor(address _encryptionVerifier, address _vscAddress) {
         encryptionVerifier = _encryptionVerifier;
+        vscAddress = _vscAddress;
         bountyTemplate = address(new Bounty());
     }
 
@@ -23,8 +25,7 @@ contract BountyFactory {
         string memory _description,
         bytes[] memory _dataCIDs,
         uint[] memory _labels,
-        uint _accuracyThreshold,
-        address vscAddress
+        uint _accuracyThreshold
     ) public payable returns (address) {
         require(msg.value > 0, "BountyFactory: must send more than 0 wei to create bounty");
         address clone = Clones.clone(bountyTemplate);
