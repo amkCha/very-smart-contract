@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { useAccount } from 'wagmi';
+//import { useAccount } from 'wagmi';
 import { Collection, NFT } from '../../types';
 import vscLogo from '../../assets/img/vsc-logo.png';
 import button from '../../assets/img/button.svg';
@@ -10,22 +10,37 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Footer from '../Footer';
 import { Link } from 'react-router-dom';
+import Header from '../Header';
 
 interface IProps {}
 
 const NFTS: React.FC<IProps> = () => {
-  const { address } = useAccount();
+  //const { address } = useAccount();
 
   const [ownedNfts, setOwnedNfts] = useState<NFT[]>([]);
   const [recommendedNfts, setRecommendedNfts] = useState<NFT[]>([]);
   const [loadingRecommendations, setLoadingRecommendations] =
     useState<boolean>(false);
 
-  const requestOptions = {
+  const initialRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      address,
+      //address,
+      address: '0x8BB6B64e14c22b6f478da1172257C1410981792B',
+      chain: 'linea_goerli',
+      page: 0,
+      sort_by: 'minted_newest',
+      contract_addresses: '',
+      name: '',
+    }),
+  };
+
+  const recommendationRequestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      address: '0xd1503b0a5AC889b7afcCbD1Aaa9E646d27c1c35F',
       chain: 'linea_goerli',
       page: 0,
       sort_by: 'minted_newest',
@@ -35,7 +50,10 @@ const NFTS: React.FC<IProps> = () => {
   };
 
   useEffect(() => {
-    fetch('https://api-testnet.nftnest.io/v1/wallet/get_nfts', requestOptions)
+    fetch(
+      'https://api-testnet.nftnest.io/v1/wallet/get_nfts',
+      initialRequestOptions,
+    )
       .then((response) => response.json())
       .then((data) => {
         const rawNfts = data.tokens['59140'];
@@ -53,10 +71,12 @@ const NFTS: React.FC<IProps> = () => {
             tokenId: rawNft[1].token_id,
             name: rawNft[1].token_info?.metadata?.name,
             collection,
-            image: rawNft[1].token_info?.metadata?.image?.replace(
-              'ipfs://',
-              `https://${process.env.REACT_APP_INFURA_IPFS}.infura-ipfs.io/ipfs/`,
-            ),
+            image: rawNft[1].token_info?.metadata?.image
+              ?.replace('ipfs://', `https://ipfs.io/ipfs/`)
+              .replace(
+                'https://gateway.pinata.cloud/ipfs/',
+                'https://ipfs.io/ipfs/',
+              ),
           };
           return n;
         });
@@ -64,20 +84,44 @@ const NFTS: React.FC<IProps> = () => {
       });
   }, []);
 
-  const delay = (milliseconds: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, milliseconds);
-    });
-  };
-
   const getRecommendations = async () => {
+    setRecommendedNfts([]);
     setLoadingRecommendations(true);
-    await delay(2000);
-    const recNfts: NFT[] = [];
-    ownedNfts.forEach((val) => recNfts.push(Object.assign({}, val)));
-    recNfts.sort(() => 0.5 - Math.random());
-    setRecommendedNfts(recNfts);
-    setLoadingRecommendations(false);
+    fetch(
+      'https://api-testnet.nftnest.io/v1/wallet/get_nfts',
+      recommendationRequestOptions,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const rawNfts = data.tokens['59140'];
+        const cleanNfts = Object.entries(rawNfts).map((rawNft: any) => {
+          const rawCollection: any = Object.entries(
+            data.contracts['59140'],
+          ).find((collection) => {
+            return collection[0] === rawNft[1]?.contract_address;
+          });
+          const collection: Collection = {
+            name: rawCollection[1]?.collection_info?.name,
+            contract: rawCollection[0],
+          };
+          const n: NFT = {
+            tokenId: rawNft[1].token_id,
+            name: rawNft[1].token_info?.metadata?.name,
+            collection,
+            image: rawNft[1].token_info?.metadata?.image
+              ?.replace('ipfs://', `https://ipfs.io/ipfs/`)
+              .replace(
+                'https://gateway.pinata.cloud/ipfs/',
+                'https://ipfs.io/ipfs/',
+              ),
+          };
+          return n;
+        });
+        setRecommendedNfts(
+          cleanNfts.filter((n) => n.name).sort(() => 0.5 - Math.random()),
+        );
+        setLoadingRecommendations(false);
+      });
   };
 
   const displayLoader = () => {
@@ -107,6 +151,7 @@ const NFTS: React.FC<IProps> = () => {
 
   return (
     <>
+      <Header />
       <Grid container spacing={2} padding={2}>
         <Grid
           item
@@ -122,24 +167,37 @@ const NFTS: React.FC<IProps> = () => {
         <Grid item xs={5}>
           <Box>
             <Paper elevation={0} style={{ backgroundColor: 'transparent' }}>
-              <Typography variant="h5" component="div" gutterBottom>
+              <Typography
+                variant="h5"
+                component="div"
+                gutterBottom
+                textAlign={'center'}
+                color={'#353435'}
+              >
                 Your NFTs
               </Typography>
               {ownedNfts.length ? (
                 <ImageList
                   sx={{ width: '100%', height: '73vh' }}
-                  variant="quilted"
+                  variant="woven"
                   cols={3}
                   rowHeight={200}
                 >
                   {ownedNfts.map((item) => (
-                    <ImageListItem key={item.image} cols={1} rows={1}>
-                      <img
-                        src={`${item.image}`}
-                        alt={item.name}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
+                    <Link
+                      to={`https://testnet.zonic.app/asset/linea_goerli/${item.collection.contract}/${item.tokenId}`}
+                      target={'_blank'}
+                      rel={'noopener'}
+                      key={`${item.collection.contract}_${item.tokenId}`}
+                    >
+                      <ImageListItem cols={1} rows={1}>
+                        <img
+                          src={`${item.image}`}
+                          alt={item.name}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    </Link>
                   ))}
                 </ImageList>
               ) : (
@@ -164,8 +222,14 @@ const NFTS: React.FC<IProps> = () => {
         <Grid item xs={5}>
           <Box>
             <Paper elevation={0} style={{ backgroundColor: 'transparent' }}>
-              <Typography variant="h5" component="div" gutterBottom>
-                Our recommendations
+              <Typography
+                variant="h5"
+                component="div"
+                gutterBottom
+                textAlign={'center'}
+                color={'#353435'}
+              >
+                What next?
               </Typography>
               {loadingRecommendations ? (
                 displayLoader()
@@ -177,13 +241,20 @@ const NFTS: React.FC<IProps> = () => {
                   rowHeight={200}
                 >
                   {recommendedNfts.map((item) => (
-                    <ImageListItem key={item.image} cols={1} rows={1}>
-                      <img
-                        src={`${item.image}`}
-                        alt={item.name}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
+                    <Link
+                      to={`https://testnet.zonic.app/asset/linea_goerli/${item.collection.contract}/${item.tokenId}`}
+                      target={'_blank'}
+                      rel={'noopener'}
+                      key={`${item.collection.contract}_${item.tokenId}`}
+                    >
+                      <ImageListItem cols={1} rows={1}>
+                        <img
+                          src={`${item.image}`}
+                          alt={item.name}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    </Link>
                   ))}
                 </ImageList>
               )}

@@ -46,8 +46,7 @@ export default function CreateBounty() {
       debounceDescription,
       debounceDataCIDs,
       debounceLabels,
-      debounceAccuracy,
-      address
+      debounceAccuracy
     ],
     overrides: {
       value: debounceAmount

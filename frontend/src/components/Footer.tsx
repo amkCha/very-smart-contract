@@ -11,7 +11,7 @@ const Footer: React.FC<IProps> = () => {
         position: 'fixed',
         bottom: 0,
         width: '100%',
-        backgroundColor: '#9198e5',
+        backgroundColor: '#3030ff',
         borderTop: 'solid',
         color: '#ffffff',
       }}

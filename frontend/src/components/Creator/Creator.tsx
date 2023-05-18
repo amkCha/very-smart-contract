@@ -30,7 +30,7 @@ const Creator: React.FC<IProps> = () => {
     address: network.VSC,
     abi: vscAbi.abi,
     functionName: 'approveCollection',
-    args: ['0x465C81b66F4aF6e0A8535734a7CD15e1aa5A4788'],
+    args: ['0x83C6Ca0D99522342F4A2E93A89Db20d15D66A8B2'],
     enabled: Boolean(isConnected && network && debounceCollectionAddress),
   });
 
@@ -99,6 +99,7 @@ const Creator: React.FC<IProps> = () => {
             onClick={() => approveCollection()}
             variant={'contained'}
             fullWidth
+            style={{ backgroundColor: '#3030ff', color: '#ffffff' }}
           >
             Approve collection
           </Button>

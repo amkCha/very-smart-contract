@@ -30,20 +30,6 @@ const Selector: React.FC<IProps> = () => {
           className={'main-tile'}
           textAlign={'center'}
         >
-          <Link to={'nfts'} className={'main-link'}>
-            I am an NFT collector
-            <br />
-            👨‍💻
-          </Link>
-        </Grid>
-        <Grid
-          item
-          xs={4}
-          display="flex"
-          justifyContent="center"
-          className={'main-tile'}
-          textAlign={'center'}
-        >
           <Link to={'creator'} className={'main-link'}>
             I am an NFT creator
             <br />
@@ -66,6 +52,20 @@ const Selector: React.FC<IProps> = () => {
             I am a ML scientist
             <br />
             👷‍♂️
+          </Link>
+        </Grid>
+        <Grid
+          item
+          xs={4}
+          display="flex"
+          justifyContent="center"
+          className={'main-tile'}
+          textAlign={'center'}
+        >
+          <Link to={'nfts'} className={'main-link'}>
+            I am an NFT collector
+            <br />
+            👨‍💻
           </Link>
         </Grid>
       </Grid>
