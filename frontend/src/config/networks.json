@@ -26,8 +26,9 @@
       "decimals": 18
     },
     "EncryptionVerifier": "0x7de9a176619bfE2AD08F4aE11BEE7f631B10a4Eb",
-    "BountyFactory": "0xf7634F49Dd13b2d36434D28254570eDCF96f72A0",
-    "CircuitVerifier": "0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15"
+    "BountyFactory": "0x583492fA7f8aF906ef94bd1324fEE91115bCCa31",
+    "CircuitVerifier": "0x9FDBfF38be41aea18A6A83D06FeDFa4d4851Ba15",
+    "VSC": "0x83C6Ca0D99522342F4A2E93A89Db20d15D66A8B2"
   },
   {
     "name": "Linea Goerli",

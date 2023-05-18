@@ -1,11 +1,16 @@
 {
-  "address": "0xf7634F49Dd13b2d36434D28254570eDCF96f72A0",
+  "address": "0x583492fA7f8aF906ef94bd1324fEE91115bCCa31",
   "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
           "name": "_encryptionVerifier",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_vscAddress",
           "type": "address"
         }
       ],
@@ -88,6 +93,20 @@
       "constant": true
     },
     {
+      "inputs": [],
+      "name": "vscAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [
         {
           "internalType": "string",
@@ -113,11 +132,6 @@
           "internalType": "uint256",
           "name": "_accuracyThreshold",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "vscAddress",
-          "type": "address"
         }
       ],
       "name": "createBounty",
