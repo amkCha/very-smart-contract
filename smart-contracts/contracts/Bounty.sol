@@ -2,18 +2,16 @@
 
 pragma solidity ^0.8.17;
 
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./ICircuitVerifier.sol";
 import "./IEncryptionVerifier.sol";
-import "./VSC.sol";
 
-contract Bounty is Initializable {
+contract Bounty is Initializable, OwnableUpgradeable {
     uint public completedStep;
     IEncryptionVerifier public encryptionVerifier;
-    address public vscAddress;
 
-    // variables set by bounty provider at Tx 1 (constructor)
+    // variables set by bounty provier at Tx 1 (constructor)
     string public name;
     string public description;
     bytes[] public dataCIDs;
@@ -49,11 +47,6 @@ contract Bounty is Initializable {
 
     event BountyUpdated(uint step);
 
-    modifier onlyVsc() {
-        require(msg.sender == vscAddress);
-        _;
-    }
-
     /*
         Tx 1
         * take owner address from factory
@@ -61,24 +54,28 @@ contract Bounty is Initializable {
         * receive native tokens as bounty reward
     */
     function initialize(
+        address _owner,
         string memory _name,
         string memory _description,
         bytes[] memory _dataCIDs,
         uint[] memory _labels,
         uint _accuracyThreshold,
-        address _encryptionVerifier,
-        address _vscAddress
+        address _encryptionVerifier
     ) public payable initializer {
         require(msg.value > 0, "Bounty reward must be greater than 0");
         // length of dataCIDs and labels should be the same
-        require(_dataCIDs.length == _labels.length, "Invalid dataCIDs or labels length");
+        require(
+            _dataCIDs.length == _labels.length,
+            "Invalid dataCIDs or labels length"
+        );
+        __Ownable_init();
+        transferOwnership(_owner);
         name = _name;
         description = _description;
         dataCIDs = _dataCIDs;
         labels = _labels;
         accuracyThreshold = _accuracyThreshold;
         encryptionVerifier = IEncryptionVerifier(_encryptionVerifier);
-        vscAddress = _vscAddress;
 
         completedStep = 1;
     }
@@ -119,20 +116,26 @@ contract Bounty is Initializable {
                 numCorrect++;
             }
         }
-        require((numCorrect * 100) / n >= accuracyThreshold, "Accuracy threshold not met");
+        require(
+            (numCorrect * 100) / n >= accuracyThreshold,
+            "Accuracy threshold not met"
+        );
 
         for (uint i = 0; i < dataCIDs.length; i++) {
             require(
                 keccak256(dataCIDs[i]) ==
-                keccak256(
-                    abi.encodePacked(
-                        CID_VERSION,
-                        CID_CODEC,
-                        CID_HASH,
-                        CID_LENGTH,
-                        concatDigest(_input[n + i * 2], _input[n + i * 2 + 1])
-                    )
-                ),
+                    keccak256(
+                        abi.encodePacked(
+                            CID_VERSION,
+                            CID_CODEC,
+                            CID_HASH,
+                            CID_LENGTH,
+                            concatDigest(
+                                _input[n + i * 2],
+                                _input[n + i * 2 + 1]
+                            )
+                        )
+                    ),
                 "Data CID mismatch"
             );
         }
@@ -160,7 +163,7 @@ contract Bounty is Initializable {
         * only callable if bounty is not complete
         * only callable if bounty hunter has submitted proof
     */
-    function releaseBounty(uint[2] memory _publicKeys) public {
+    function releaseBounty(uint[2] memory _publicKeys) public onlyOwner {
         require(!isComplete, "Bounty is already complete");
         require(a[0] != 0, "Bounty hunter has not submitted proof");
 
@@ -183,21 +186,31 @@ contract Bounty is Initializable {
         uint[2][2] memory _b,
         uint[2] memory _c,
         uint[1005] memory _input
-    /*
-     * first element is the model hash
-     * the next element is the shared key
-     * the next 1001 elements are the encrypted input
-     * the last 2 elements are the public keys
-     */
+        /*
+            * first element is the model hash
+            * the next element is the shared key
+            * the next 1001 elements are the encrypted input
+            * the last 2 elements are the public keys
+        */
     ) public {
+        require(
+            msg.sender == bountyHunter,
+            "Only bounty hunter can claim bounty"
+        );
         require(isComplete, "Bounty is not complete");
         require(address(this).balance > 0, "Bounty already claimed");
 
         // verify model hash
-        require(modelHash == _input[0], "Model hash does not match submitted proof");
+        require(
+            modelHash == _input[0],
+            "Model hash does not match submitted proof"
+        );
 
         // verify public keys
-        require(publicKeys[0] == _input[1003] && publicKeys[1] == _input[1004], "Public keys do not match");
+        require(
+            publicKeys[0] == _input[1003] && publicKeys[1] == _input[1004],
+            "Public keys do not match"
+        );
 
         // verify encryption
         require(
@@ -205,24 +218,17 @@ contract Bounty is Initializable {
             "Invalid encryption"
         );
         input = _input;
-
         payable(msg.sender).transfer(address(this).balance);
-        // // pay the NFT creators and the bounty hunter
-        // uint nbNFTCreators = VSC(vscAddress).nbNFTCreators();
-        // uint256 share;
-        // // divide balance per share for all NFTCreators and bounty hunter
-        // share = SafeMath.div(address(this).balance, nbNFTCreators + 1);
-        // for (uint i = 0; i < nbNFTCreators; i++) {
-        //     payable(VSC(vscAddress).NFTCreators(i)).transfer(share);
-        // }
-        // payable(msg.sender).transfer(share);
 
         emit BountyUpdated(4);
         completedStep = 4;
     }
 
     // function to concat input into digest
-    function concatDigest(uint input1, uint input2) public pure returns (bytes32) {
+    function concatDigest(
+        uint input1,
+        uint input2
+    ) public pure returns (bytes32) {
         return bytes32((input1 << 128) + input2);
     }
 
@@ -245,7 +251,7 @@ contract Bounty is Initializable {
     ) public view returns (bool) {
         return encryptionVerifier.verifyProof(_a, _b, _c, _input);
     }
-
+    
     // TODO: function to cancel bounty and withdraw reward
 
     // TODO: function to edit bounty details

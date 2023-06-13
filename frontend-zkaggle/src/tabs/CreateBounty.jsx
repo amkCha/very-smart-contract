@@ -31,7 +31,7 @@ export default function CreateBounty() {
   const [amount, setAmount] = React.useState("0.0001");
   const [debounceAmount] = useDebounce(ethers.utils.parseUnits(amount, "ether"), 500);
 
-  const { address } = useAccount();
+  // const { address } = useAccount();
 
   const {
     config,
@@ -46,8 +46,7 @@ export default function CreateBounty() {
       debounceDescription,
       debounceDataCIDs,
       debounceLabels,
-      debounceAccuracy,
-      address
+      debounceAccuracy
     ],
     overrides: {
       value: debounceAmount

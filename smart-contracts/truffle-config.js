@@ -16,7 +16,7 @@ module.exports = {
       network_id: 5,
     },
     sepolia: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://sepolia.infura.io/v3/${INFURA_API_KEY}`),
+      provider: () => new HDWalletProvider(MNEMONIC, `https://sepolia.infura.io/v3/9f4e657f1f994981b2aece53d0377e33`),
       network_id: 11155111,
     },
     linea: {
