@@ -6,8 +6,9 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 module.exports = {
   networks: {
     development: {
+      provider: () => new HDWalletProvider(MNEMONIC, `http://127.0.0.1:8545`),
       host: "127.0.0.1",
-      port: 7545,
+      port: 8545,
       network_id: "*",
     },
     goerli: {

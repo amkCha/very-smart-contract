@@ -15,14 +15,14 @@ pragma solidity ^0.8.17;
 
 import "./Pairing100.sol";
 import "./Pairing200.sol";
-import "./Pairing300.sol";
-import "./Pairing400.sol";
-import "./Pairing500.sol";
-import "./Pairing600.sol";
-import "./Pairing700.sol";
-import "./Pairing800.sol";
-import "./Pairing900.sol";
-import "./Pairing1000.sol";
+// import "./Pairing300.sol";
+// import "./Pairing400.sol";
+// import "./Pairing500.sol";
+// import "./Pairing600.sol";
+// import "./Pairing700.sol";
+// import "./Pairing800.sol";
+// import "./Pairing900.sol";
+// import "./Pairing1000.sol";
 
 library Pairing {
     struct G1Point {
@@ -178,14 +178,14 @@ contract EncryptionVerifier {
 
     address private pairing100;
     address private pairing200;
-    address private pairing300;
-    address private pairing400;
-    address private pairing500;
-    address private pairing600;
-    address private pairing700;
-    address private pairing800;
-    address private pairing900;
-    address private pairing1000;
+    // address private pairing300;
+    // address private pairing400;
+    // address private pairing500;
+    // address private pairing600;
+    // address private pairing700;
+    // address private pairing800;
+    // address private pairing900;
+    // address private pairing1000;
 
     struct VerifyingKey {
         Pairing.G1Point alfa1;
@@ -202,26 +202,26 @@ contract EncryptionVerifier {
 
     constructor(
         address add100,
-        address add200,
-        address add300,
-        address add400,
-        address add500,
-        address add600,
-        address add700,
-        address add800, 
-        address add900,
-        address add1000
+        address add200
+        // address add300,
+        // address add400,
+        // address add500,
+        // address add600,
+        // address add700,
+        // address add800, 
+        // address add900,
+        // address add1000
     ) {
         pairing100 = add100;
         pairing200 = add200;
-        pairing300 = add300;
-        pairing400 = add400;
-        pairing500 = add500;
-        pairing600 = add600;
-        pairing700 = add700;
-        pairing800 = add800;
-        pairing900 = add900;
-        pairing1000 = add1000;
+        // pairing300 = add300;
+        // pairing400 = add400;
+        // pairing500 = add500;
+        // pairing600 = add600;
+        // pairing700 = add700;
+        // pairing800 = add800;
+        // pairing900 = add900;
+        // pairing1000 = add1000;
     }
 
     function verifyingKey() internal pure returns (VerifyingKey memory vk) {
@@ -267,51 +267,51 @@ contract EncryptionVerifier {
             (uint X, uint Y) = Pairing100(pairing100).vk(i + 1);
             vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i]));
         }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 100] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing200(pairing200).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 100]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 200] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing300(pairing300).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 200]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 300] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing400(pairing400).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 300]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 400] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing500(pairing500).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 400]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 500] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing600(pairing600).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 500]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 600] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing700(pairing700).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 600]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 700] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing800(pairing800).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 700]));
-        }
-        for (uint i = 0; i < 100; i++) {
-            require(input[i + 800] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing900(pairing900).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 800]));
-        }
-        for (uint i = 0; i < 105; i++) {
-            require(input[i + 900] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing1000(pairing1000).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 900]));
-        }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 100] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing200(pairing200).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 100]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 200] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing300(pairing300).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 200]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 300] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing400(pairing400).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 300]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 400] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing500(pairing500).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 400]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 500] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing600(pairing600).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 500]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 600] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing700(pairing700).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 600]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 700] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing800(pairing800).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 700]));
+        // }
+        // for (uint i = 0; i < 100; i++) {
+        //     require(input[i + 800] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing900(pairing900).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 800]));
+        // }
+        // for (uint i = 0; i < 105; i++) {
+        //     require(input[i + 900] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing1000(pairing1000).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 900]));
+        // }
         vk_x = Pairing.addition(vk_x, vk.IC[0]);
         if (!Pairing.pairingProd4(
             Pairing.negate(proof.A), proof.B,

@@ -4,19 +4,6 @@
     {
       "inputs": [
         {
-          "internalType": "address[10]",
-          "name": "addresses",
-          "type": "address[10]"
-        }
-      ],
-      "name": "setPairingAdresses",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256[2]",
           "name": "a",
           "type": "uint256[2]"
@@ -30149,6 +30136,12 @@
       "links": {},
       "address": "0x7de9a176619bfE2AD08F4aE11BEE7f631B10a4Eb",
       "transactionHash": "0xb756bb2311b99e8292d635d8718aa4025ab6c8595a6b156bd5b47f0406311caf"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xFb057832EF5C7C34B5857a12De93b3DCF5B6B787",
+      "transactionHash": "0x7c026550161a6d39bc08837c356dbe6159183df453686b3b1d86591cd13d57cb"
     }
   },
   "schemaVersion": "3.4.13",

@@ -52,12 +52,17 @@ export default function SubmitWeights(props) {
       debounceC,
       debounceInput,
       {
-        gasLimit: 30000000
+        gasLimit: 50000000
       }
     ]
   });
 
+  console.log("prepareError", prepareError)
+
   const { data, error, isError, write } = useContractWrite(config);
+
+  console.log("isError", isError)
+  console.log("error", error)
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash

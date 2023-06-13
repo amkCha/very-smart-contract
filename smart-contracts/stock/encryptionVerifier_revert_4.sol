@@ -22,7 +22,7 @@ import "./Pairing600.sol";
 import "./Pairing700.sol";
 import "./Pairing800.sol";
 import "./Pairing900.sol";
-import "./Pairing1000.sol";
+// import "./Pairing1000.sol";
 
 library Pairing {
     struct G1Point {
@@ -185,7 +185,7 @@ contract EncryptionVerifier {
     address private pairing700;
     address private pairing800;
     address private pairing900;
-    address private pairing1000;
+    // address private pairing1000;
 
     struct VerifyingKey {
         Pairing.G1Point alfa1;
@@ -209,8 +209,8 @@ contract EncryptionVerifier {
         address add600,
         address add700,
         address add800, 
-        address add900,
-        address add1000
+        address add900
+        // address add1000
     ) {
         pairing100 = add100;
         pairing200 = add200;
@@ -221,7 +221,7 @@ contract EncryptionVerifier {
         pairing700 = add700;
         pairing800 = add800;
         pairing900 = add900;
-        pairing1000 = add1000;
+        // pairing1000 = add1000;
     }
 
     function verifyingKey() internal pure returns (VerifyingKey memory vk) {
@@ -307,11 +307,11 @@ contract EncryptionVerifier {
             (uint X, uint Y) = Pairing900(pairing900).vk(i + 1);
             vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 800]));
         }
-        for (uint i = 0; i < 105; i++) {
-            require(input[i + 900] < snark_scalar_field, "verifier-gte-snark-scalar-field");
-            (uint X, uint Y) = Pairing1000(pairing1000).vk(i + 1);
-            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 900]));
-        }
+        // for (uint i = 0; i < 105; i++) {
+        //     require(input[i + 900] < snark_scalar_field, "verifier-gte-snark-scalar-field");
+        //     (uint X, uint Y) = Pairing1000(pairing1000).vk(i + 1);
+        //     vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 900]));
+        // }
         vk_x = Pairing.addition(vk_x, vk.IC[0]);
         if (!Pairing.pairingProd4(
             Pairing.negate(proof.A), proof.B,

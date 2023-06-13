@@ -307,7 +307,7 @@ contract EncryptionVerifier {
             (uint X, uint Y) = Pairing900(pairing900).vk(i + 1);
             vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 800]));
         }
-        for (uint i = 0; i < 105; i++) {
+        for (uint i = 0; i < 100; i++) {
             require(input[i + 900] < snark_scalar_field, "verifier-gte-snark-scalar-field");
             (uint X, uint Y) = Pairing1000(pairing1000).vk(i + 1);
             vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(Pairing.G1Point(X, Y), input[i + 900]));

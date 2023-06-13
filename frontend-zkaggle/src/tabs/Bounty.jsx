@@ -57,7 +57,7 @@ export default function Bounty(props) {
           <Typography variant="h4" color="text.primary">Waiting for model weights...</Typography>}
       </div>)}
       {step === 4 && (<div>
-        {address === props.bounty.owner && <ReceiveWeights bounty={props.bounty} />}
+        {<ReceiveWeights bounty={props.bounty} />}
       </div>)}
     </div>
   );
