@@ -46,3 +46,7 @@ _WIP_
 ### 4. Deploy the contract
 
     npm run deploy:sepolia
+
+## UI example
+
+![alt text](visual.png "Title")
